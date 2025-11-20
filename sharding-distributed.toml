@@ -1,0 +1,26 @@
+# Configuración para base de datos distribuida REAL en múltiples computadoras
+# IMPORTANTE: Cambia las IPs por las IPs reales de tus computadoras
+
+[[shards]]
+name = "Mumbai"
+idx = 0
+address = "172.20.10.3:8080"      # IP de la Computadora 1
+replicas = []                      # Sin réplicas para simplificar
+
+[[shards]]
+name = "Delhi"
+idx = 1
+address = "172.20.10.4:8080"      # IP de la Computadora 2
+replicas = []
+
+[[shards]]
+name = "Chennai"
+idx = 2
+address = "172.20.10.5:8080"      # IP de la Computadora 3
+replicas = []
+
+[[shards]]
+name = "Bangalore"
+idx = 3
+address = "172.20.10.6:8080"      # IP de la Computadora 4
+replicas = []
