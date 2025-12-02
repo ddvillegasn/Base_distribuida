@@ -4,17 +4,17 @@
 [[shards]]
 name = "Pereira"
 idx = 0
-address = "172.20.10.2:8080"      # IP de la Computadora 1
-replicas = []                      # Sin réplicas para simplificar
+address = "10.1.2.4:8080"   # PC físico - IP pública
+replicas = []
 
 [[shards]]
 name = "Medellin"
 idx = 1
-address = "172.20.10.3:8080"      # IP de la Computadora 3
+address = "10.1.0.4:8080"       # VM Medellín - IP privada
 replicas = []
 
 [[shards]]
 name = "Cali"
 idx = 2
-address = "172.20.10.4:8080"      # IP de la Computadora 4
+address = "10.1.1.4:8080"       # VM Cali - IP privada
 replicas = []

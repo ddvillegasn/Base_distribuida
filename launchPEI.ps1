@@ -1,7 +1,7 @@
 # Script para lanzar el nodo PEREIRA y su réplica.
 
 # Iniciar nodos principales
-Start-Process powershell -ArgumentList "-NoExit", "-Command", ".\distributedKV.exe --db-location=Pereira.db --http-addr=127.0.0.2:8080 --config-file=sharding-distributed.toml --shard=Pereira"
+Start-Process powershell -ArgumentList "-NoExit", "-Command", ".\distributedKV.exe --db-location=Pereira.db --http-addr=10.1.2.4:8080 --config-file=sharding-distributed.toml --shard=Pereira"
 
 # Iniciar réplicas
 # Start-Process powershell -ArgumentList "-NoExit", "-Command", ".\distributedKV.exe --db-location=Pereira-r.db --http-addr=127.0.0.22:8080 --config-file=sharding.toml --shard=Pereira --replica"
