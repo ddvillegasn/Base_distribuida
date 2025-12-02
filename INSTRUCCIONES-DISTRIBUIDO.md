@@ -19,22 +19,22 @@ Edita el archivo `sharding-distributed.toml` y pon las **IPs reales** de tus com
 
 ```toml
 [[shards]]
-name = "Mumbai"
+name = "Pereira"
 idx = 0
 address = "192.168.1.10:8080"    # IP real de la PC 1
 
 [[shards]]
-name = "Delhi"
+name = "Bogota"
 idx = 1
 address = "192.168.1.11:8080"    # IP real de la PC 2
 
 [[shards]]
-name = "Chennai"
+name = "Medellin"
 idx = 2
 address = "192.168.1.12:8080"    # IP real de la PC 3
 
 [[shards]]
-name = "Bangalore"
+name = "Cali"
 idx = 3
 address = "192.168.1.13:8080"    # IP real de la PC 4
 ```
@@ -49,24 +49,24 @@ New-NetFirewallRule -DisplayName "Distributed DB" -Direction Inbound -Protocol T
 
 ### 4. Ejecutar en cada computadora
 
-**En la Computadora 1 (Mumbai):**
+**En la Computadora 1 (Pereira):**
 ```powershell
-.\distributedKV.exe --db-location=Mumbai.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Mumbai
+.\distributedKV.exe --db-location=Pereira.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Pereira
 ```
 
-**En la Computadora 2 (Delhi):**
+**En la Computadora 2 (Bogota):**
 ```powershell
-.\distributedKV.exe --db-location=Delhi.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Delhi
+.\distributedKV.exe --db-location=Bogota.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Bogota
 ```
 
-**En la Computadora 3 (Chennai):**
+**En la Computadora 3 (Medellin):**
 ```powershell
-.\distributedKV.exe --db-location=Chennai.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Chennai
+.\distributedKV.exe --db-location=Medellin.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Medellin
 ```
 
-**En la Computadora 4 (Bangalore):**
+**En la Computadora 4 (Cali):**
 ```powershell
-.\distributedKV.exe --db-location=Bangalore.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Bangalore
+.\distributedKV.exe --db-location=Cali.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Cali
 ```
 
 **IMPORTANTE:** Usa `0.0.0.0:8080` para que escuche en todas las interfaces de red.
@@ -101,7 +101,7 @@ Donde X es el índice del shard (0, 1, 2, o 3).
 ```
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
 │   PC 1      │    │   PC 2      │    │   PC 3      │    │   PC 4      │
-│  Mumbai     │◄──►│  Delhi      │◄──►│  Chennai    │◄──►│ Bangalore   │
+│  Pereira    │◄──►│   Bogota    │◄──►│  Medellin   │◄──►│    Cali     │
 │  Shard 0    │    │  Shard 1    │    │  Shard 2    │    │  Shard 3    │
 │ 192.168.1.10│    │192.168.1.11 │    │192.168.1.12 │    │192.168.1.13 │
 └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘

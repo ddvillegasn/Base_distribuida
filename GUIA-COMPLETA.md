@@ -22,13 +22,13 @@ Los datos se dividen entre 4 nodos usando un **hash de la clave**:
     └──────────┬───────────┘
                │
                ▼
-    ┌─────────────────────────────────┐
-    │ PC 1    │ PC 2   │ PC 3   │ PC 4│
-    │ Mumbai  │ Delhi  │Chennai │Bangl│
-    │ Shard 0 │Shard 1 │Shard 2 │Shard│
-    │         │        │  ✓     │  3  │
-    └─────────────────────────────────┘
-           "nombre=Juan" se guarda en Chennai (Shard 2)
+    ┌──────────────────────────────────────┐
+    │  PC 1   │  PC 2   │  PC 3   │ PC 4   │
+    │ Pereira │ Bogota  │Medellin │ Cali   │
+    │ Shard 0 │ Shard 1 │ Shard 2 │ Shard 3│
+    │         │         │   ✓     │        │
+    └──────────────────────────────────────┘
+           "nombre=Juan" se guarda en Medellin (Shard 2)
 ```
 
 ### 2️⃣ **Redirección Automática**
@@ -86,10 +86,10 @@ Anota las IPs de las 4 computadoras:
 
 | Computadora | Nombre Nodo | IP              | Puerto | Responsable  |
 |-------------|-------------|-----------------|--------|--------------|
-| PC 1        | Mumbai      | 192.168.1.10    | 8080   | Persona A    |
-| PC 2        | Delhi       | 192.168.1.11    | 8080   | Persona B    |
-| PC 3        | Chennai     | 192.168.1.12    | 8080   | Persona C    |
-| PC 4        | Bangalore   | 192.168.1.13    | 8080   | Persona D    |
+| PC 1        | Pereira     | 192.168.1.10    | 8080   | Persona A    |
+| PC 2        | Bogota      | 192.168.1.11    | 8080   | Persona B    |
+| PC 3        | Medellin    | 192.168.1.12    | 8080   | Persona C    |
+| PC 4        | Cali        | 192.168.1.13    | 8080   | Persona D    |
 
 *(Cambia las IPs por las reales)*
 
@@ -101,25 +101,25 @@ Anota las IPs de las 4 computadoras:
 
 ```toml
 [[shards]]
-name = "Mumbai"
+name = "Pereira"
 idx = 0
 address = "192.168.1.10:8080"    # IP de la PC 1
 replicas = []
 
 [[shards]]
-name = "Delhi"
+name = "Bogota"
 idx = 1
 address = "192.168.1.11:8080"    # IP de la PC 2
 replicas = []
 
 [[shards]]
-name = "Chennai"
+name = "Medellin"
 idx = 2
 address = "192.168.1.12:8080"    # IP de la PC 3
 replicas = []
 
 [[shards]]
-name = "Bangalore"
+name = "Cali"
 idx = 3
 address = "192.168.1.13:8080"    # IP de la PC 4
 replicas = []
@@ -147,24 +147,24 @@ Esto crea el archivo `distributedKV.exe`
 
 Cada persona ejecuta **SU nodo** correspondiente:
 
-**📍 En la PC 1 (Mumbai):**
+**📍 En la PC 1 (Pereira):**
 ```powershell
-.\distributedKV.exe --db-location=Mumbai.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Mumbai
+.\distributedKV.exe --db-location=Pereira.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Pereira
 ```
 
-**📍 En la PC 2 (Delhi):**
+**📍 En la PC 2 (Bogota):**
 ```powershell
-.\distributedKV.exe --db-location=Delhi.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Delhi
+.\distributedKV.exe --db-location=Bogota.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Bogota
 ```
 
-**📍 En la PC 3 (Chennai):**
+**📍 En la PC 3 (Medellin):**
 ```powershell
-.\distributedKV.exe --db-location=Chennai.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Chennai
+.\distributedKV.exe --db-location=Medellin.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Medellin
 ```
 
-**📍 En la PC 4 (Bangalore):**
+**📍 En la PC 4 (Cali):**
 ```powershell
-.\distributedKV.exe --db-location=Bangalore.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Bangalore
+.\distributedKV.exe --db-location=Cali.db --http-addr=0.0.0.0:8080 --config-file=sharding-distributed.toml --shard=Cali
 ```
 
 **✅ Si funciona**, verás en cada consola:
@@ -180,7 +180,7 @@ Desde **CUALQUIER PC**, puedes hacer peticiones:
 
 #### **Guardar datos:**
 ```powershell
-# Desde cualquier PC, apunta a CUALQUIER nodo (Mumbai en este ejemplo)
+# Desde cualquier PC, apunta a CUALQUIER nodo (Pereira en este ejemplo)
 curl "http://192.168.1.10:8080/set?key=nombre&value=Juan"
 curl "http://192.168.1.10:8080/set?key=edad&value=25"
 curl "http://192.168.1.10:8080/set?key=ciudad&value=Madrid"
@@ -197,12 +197,12 @@ curl "http://192.168.1.10:8080/get?key=edad"
 
 #### **Lo que sucede internamente:**
 ```
-1. Haces petición a Mumbai (192.168.1.10)
-2. Mumbai calcula: hash("nombre") % 4 = 2
-3. Mumbai ve que Shard 2 = Chennai (192.168.1.12)
-4. Mumbai redirige automáticamente a Chennai
-5. Chennai guarda/obtiene el dato
-6. Chennai responde
+1. Haces petición a Pereira (192.168.1.10)
+2. Pereira calcula: hash("nombre") % 4 = 2
+3. Pereira ve que Shard 2 = Medellin (192.168.1.12)
+4. Pereira redirige automáticamente a Medellin
+5. Medellin guarda/obtiene el dato
+6. Medellin responde
 ```
 
 ---
@@ -226,23 +226,23 @@ curl "http://192.168.1.10:8080/set?key=clave3&value=valor3"
 # 1. Guardar un dato
 curl "http://192.168.1.10:8080/set?key=test&value=funciona"
 
-# 2. Apagar UNA de las PCs (ej: Chennai)
+# 2. Apagar UNA de las PCs (ej: Medellin)
 
-# 3. Intentar leer un dato que estaba en Chennai
+# 3. Intentar leer un dato que estaba en Medellin
 curl "http://192.168.1.10:8080/get?key=test"
-# Si "test" estaba en Chennai, dará error
+# Si "test" estaba en Medellin, dará error
 
 # 4. Leer datos de otros nodos (siguen funcionando)
 curl "http://192.168.1.10:8080/get?key=clave1"
-# Si "clave1" estaba en Mumbai/Delhi/Bangalore, funciona perfectamente
+# Si "clave1" estaba en Pereira/Bogota/Cali, funciona perfectamente
 ```
 
 ### **Experimento 3: Balanceo de Carga**
 ```powershell
 # Hacer peticiones a diferentes nodos
-curl "http://192.168.1.10:8080/set?key=a&value=1"  # A Mumbai
-curl "http://192.168.1.11:8080/set?key=b&value=2"  # A Delhi
-curl "http://192.168.1.12:8080/set?key=c&value=3"  # A Chennai
+curl "http://192.168.1.10:8080/set?key=a&value=1"  # A Pereira
+curl "http://192.168.1.11:8080/set?key=b&value=2"  # A Bogota
+curl "http://192.168.1.12:8080/set?key=c&value=3"  # A Medellin
 
 # Todos redirigen correctamente según el hash
 # Observar en las consolas las redirecciones
@@ -264,7 +264,7 @@ func (s *Shards) Index(key string) int {
 
 **Ejemplo:**
 - `hash("nombre")` = `12847563982765432`
-- `12847563982765432 % 4` = `2` → **Shard 2 (Chennai)**
+- `12847563982765432 % 4` = `2` → **Shard 2 (Medellin)**
 
 ### **Flujo de una petición SET:**
 ```
@@ -291,7 +291,7 @@ R: `0.0.0.0` escucha en TODAS las interfaces de red (permite conexiones externas
 R: Los datos que estaban en ese nodo NO estarán disponibles, pero el resto del sistema sigue funcionando. Por eso existen las réplicas.
 
 **P: ¿Cómo sé qué datos están en cada nodo?**  
-R: Cada nodo crea un archivo `.db` (Mumbai.db, Delhi.db, etc.) con sus datos. El tamaño del archivo indica cuántos datos tiene.
+R: Cada nodo crea un archivo `.db` (Pereira.db, Bogota.db, etc.) con sus datos. El tamaño del archivo indica cuántos datos tiene.
 
 **P: ¿Puedo usar solo 2 o 3 PCs?**  
 R: Sí, edita `sharding-distributed.toml` y reduce el número de shards. Pero necesitas al menos 2 para demostrar distribución.
